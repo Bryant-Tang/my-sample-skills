@@ -87,7 +87,7 @@
 ## 專案結構
 
 ```text
-...\my-project\
+<YOUR_ROOT_DIR>\my-project\
     my-project\           # Git repo, Git branch: main  + SVN repo: /my-project/main
     my-project.worktrees\
         dev-1\              # 純 Git 開發目錄，在裡面切換 feature/A、bugfix/some-bug、...
