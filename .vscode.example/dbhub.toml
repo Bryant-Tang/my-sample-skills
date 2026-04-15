@@ -1,0 +1,25 @@
+[[sources]]
+id = "<DB_NAME>"
+dsn = "sqlserver://<ACCOUNT>:<PASSWORD>@<DOMAIN>:<PORT>/<DB_NAME>"
+
+[[tools]]
+name = "execute_sql"
+source = "<DB_NAME>"
+readonly = true
+
+[[tools]]
+name = "search_objects"
+source = "<DB_NAME>"
+
+[[sources]]
+id = "<DB_NAME_2>"
+dsn = "sqlserver://<ACCOUNT_2>:<PASSWORD_2>@<DOMAIN>:<PORT>/<DB_NAME_2>"
+
+[[tools]]
+name = "execute_sql"
+source = "<DB_NAME_2>"
+readonly = true
+
+[[tools]]
+name = "search_objects"
+source = "<DB_NAME_2>"

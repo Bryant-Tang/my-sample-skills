@@ -1,0 +1,51 @@
+{
+	"servers": {
+		"dbhub": {
+			"type": "stdio",
+			"command": "docker",
+			"args": [
+				"run",
+				"-i",
+				"--rm",
+				"--init",
+				"--pull=always",
+				"-v",
+				"${workspaceFolder}/.vscode/dbhub.toml:/dbhub.toml",
+				"bytebase/dbhub",
+				"--transport",
+				"stdio",
+				"--config",
+				"/dbhub.toml"
+			]
+		},
+		"memory-server": {
+			"type": "stdio",
+			"command": "docker",
+			"args": [
+				"run",
+				"-i",
+				"--rm",
+				"--pull=always",
+				"-v",
+				"${workspaceFolder}/.vscode/memory-server.jsonl:/memory-server.jsonl",
+				"-e",
+				"MEMORY_FILE_PATH=/memory-server.jsonl",
+				"mcp/memory"
+			]
+		},
+		"markitdown": {
+			"type": "stdio",
+			"command": "docker",
+			"args": [
+				"run",
+				"-i",
+				"--rm",
+				"--pull=always",
+				"-v",
+				"${workspaceFolder}:/workdir",
+				"mcp/markitdown"
+			]
+		}
+	},
+	"inputs": []
+}
