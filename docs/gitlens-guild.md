@@ -1,4 +1,4 @@
-# GitLens 指南
+# GitLens 簡易指南
 
 GitLens 是一個綜合的 git 操作相關擴充功能，包含絕大多數常見的 git 操作都可以用 GitLens 以 GUI 的方式操作，告別終端機中的 git 指令。
 

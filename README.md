@@ -82,7 +82,7 @@
 
 ## 其他建議指南
 
-
+- [GitLens 簡易指南](./docs/gitlens-guild.md)
 
 ## 專案結構
 
