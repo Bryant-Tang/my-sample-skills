@@ -1,13 +1,11 @@
 # Sample skills for .NET Framework
 
-這是一套我自己在使用的 skill + rule + MCP tool + settings
-，可編譯、執行 .NET Framework 專案，歡迎複製使用
-
+這是一套我自己在使用的 skill + rule + MCP tool + settings ，可編譯、執行 .NET Framework 專案，歡迎複製使用  
 後續可能會持續更新 skill 內容
 
 ## 安裝步驟
 
-1. 如果你還沒有，安裝 [Microsoft VS Code <font size="1">~~微軟大戰程式碼~~</font>](https://code.visualstudio.com/)
+1. 如果你還沒有，安裝 [Microsoft VS Code <font style="opacity: 0.2;">~~微軟大戰程式碼~~</font>](https://code.visualstudio.com/)
 1. MCP 工具建議使用 Docker 運行，如果你還沒有，安裝 [Docker/Docker Desktop](https://www.docker.com/)，然後就可以直接使用 [mcp.json](./.vscode/mcp.json)
     > 如果不使用 Docker ，請自行確保 [mcp.json](./.vscode/mcp.json) 中的 MCP 工具都可運行，可以參考 [各個 MCP 官方連結](#參考連結)
 1. 參考 [建議設定](./docs/recommend-settings.md) 安裝套件、設定 VS Code
@@ -34,40 +32,61 @@
 
 ## Skill 說明
 
-### start-dev
+***<font size=4 color="red">不要在同一個 chat session 中接續使用 skill</font>***，尤其是開發流程的 `start-dev`, `write-plan`, `implement-task`, `testing-and-proof`。
+因為 LLM 傾向在 context window 快要不足之前，草草收尾，以避免撞到上限。
+盡管現在 AI 供應商都有提供壓縮聊天內容指令，但壓縮內容通常會造成 LLM 丟失資訊，並且你無從得知 LLM 丟失哪些資訊，一來一回補給它更多資訊還會又造成 context window 不足，最終得到品質低下的產出。
+(<font style="opacity: 0.2;">~~LLM 腦容量沒有那麼多可以一次到位處理計畫加實作加測試~~</font>)
+
+你需要閱讀開發流程中產生的 `sepcs/` 、 `sql files/` 內的文件，確認內容符合你所期望的，因為後續 LLM 會依照這些檔案工作，大原則是**可以缺但不能錯**，有缺可以補，但是有錯要改會很麻煩，效率上不如重新開始。
+
+> (至少在 LLM 使用該檔案開始工作之前，要檢查。例如 write-plan 之前檢查 `goal.md` 、 implement-task 之前檢查 `plan.md` 、 testing-and-proof 之前檢查 `test-plan.md` 跟 `test-n.md`)
+
+如果需要修改可以再跟 LLM 說，但建議盡量一次講完所有需要修改的地方，避免同一個 chat session 多次來回修改，超出 context window。如果真的超出 context window 觸發自動壓縮，建議停止然後另開 chat session 重新修改。
+
+### 各 skill 詳細說明
+
+以下是各個 skill 的詳細說明，一般狀況下，你通常只會用到 `/start-dev` 、 `/write-plan` 、 `/implement-task` 、 `/testing-and-proof` 、 `/commit-msg`。
+
+#### start-dev
 
 使用 `/start-dev` 指令開始一個需求，跟 LLM 討論需求，叫他幫你產生需求目標檔案 `goal.md`，建立對應 git 分支。
 
-### write-plan
+#### write-plan
 
-使用 `/write-plan` 指令，會根據指定的 `goal.md`，規劃實作計畫、任務、測試計畫在 `specs/`
+使用 `/write-plan` 指令，會根據指定的 `goal.md`，規劃實作計畫、任務、測試計畫在 `specs/`。
 
-### implement-task
+#### implement-task
 
 使用 `/implement-task` 指令，會根據指定的 `plan.md`，依序呼叫 subAgent 實作，並呼叫 subAgent 依據 `plan.md` 中定義的 AC 審查。
 
-如果任務很多但其實可以並行實作，想要並行可以叫他並行實作各個任務，但建議要加上叫他讓不同 subAgent 使用不同終端機。
+雖然 LLM 會審查，但仍然強烈建議你在 commit 前，自己大致審查過所有程式碼變更，除非你極度信任 `plan.md` 中的 AC 條件，認為那些 AC 條件足以完美確保程式碼不會有錯誤。
 
-### testing-and-proof
+如果任務很多但其實不互相依賴，可以並行實作，你可以叫他並行實作各個任務，但建議要加上叫他讓不同 subAgent 使用不同終端機，以避免同時多個 subAgent 互相衝突。
 
-如果是可以運行起來在瀏覽器驗證的功能或是 bug ，可以用這個 `/testing-and-proof` 指令叫他根據 `test-plan.md` 驗證。
+如果一份 `plan.md` 中有很多項任務，不建議一次實作太多任務。 因為:
+如果是依序實作任務，盡管實作跟審查都是 subAgent 負責，連續處理太多任務仍然可能導致 context window 不足。
+如果是並行實作任務，就算 LLM 成功完成，太多任務所造成的大量程式碼變更，會導致你需要一次審查大量程式碼，我個人的經驗是，光是看到變更清單的大量檔案，就會減少我審查程式碼的動力。
+
+#### testing-and-proof
+
+如果是可以運行起來在瀏覽器驗證的功能或是 bug ，可以用這個 `/testing-and-proof` 指令叫他根據 `test-plan.md` 、 `test-n.md` 驗證。
 這部分會先 apply 一份本機測試用 stash，然後再 build 、 run 、 test。(可以在 [skill-scripts.psd1](./.agents/skill-scripts.psd1) 裡面設定，如果留空就不 apply)
 
-### build-project
-
-使用 `/build-project` 指令或讓 LLM 自己觸發，使用已寫好的 ps1 腳本建置 .NET Framework 專案，如果有設定前端打包，也會打包前端。(可以在 [skill-scripts.psd1](./.agents/skill-scripts.psd1) 裡面設定)
-
-### run-project
-
-使用 `/run-project` 指令或讓 LLM 自己觸發，使用已寫好的 ps1 腳本運行 .NET Framework 專案在 IIS Express 上，需要先提供 applicationhost.config 檔案。(在 [skill-scripts.psd1](./.agents/skill-scripts.psd1) 裡面設定)
-
-### commit-msg
+#### commit-msg
 
 使用 `/commit-msg` 指令，直接告訴 LLM 你要 commit 哪個 wroktree 的變更、哪些變更...之類的，然後它會給你適合的 commit 訊息
 
-### db-management
+#### build-project
 
-定義了 db 相關的規則，通常不用手動使用，除非他看起來忘記 db 相關規則，可以標給他叫他依照 db 規則
+使用 `/build-project` 指令或讓 LLM 自己觸發，使用已寫好的 ps1 腳本建置 .NET Framework 專案，如果有設定前端打包，也會打包前端。(可以在 [skill-scripts.psd1](./.agents/skill-scripts.psd1) 裡面設定)
+
+#### run-project
+
+使用 `/run-project` 指令或讓 LLM 自己觸發，使用已寫好的 ps1 腳本運行 .NET Framework 專案在 IIS Express 上，需要先提供 applicationhost.config 檔案。(在 [skill-scripts.psd1](./.agents/skill-scripts.psd1) 裡面設定)
+
+#### db-management
+
+定義了 db 相關的規則，通常不用手動使用，除非他看起來忘記 db 相關規則，可以標給他叫他依照 db 規則。
 - 分為 local 、 test 、 main
 - read:
     - local 可以用 DBHub 直接讀取
@@ -75,10 +94,10 @@
 - write:
     - 一律寫到 [sql files](./sql%20files/) 裡面，請使用者執行
 
-### memory
+#### memory
 
-定義了記憶相關的部分，通常不用手動使用
-因為只有單純開 memory-server MCP 工具給 LLM 使用的話，它幾乎只在明確提到記憶相關字詞時才會使用，所以用這個 skill 讓它自主使用記憶
+定義了記憶相關的部分，通常不用手動使用。  
+因為只有單純開 memory-server MCP 工具給 LLM 使用的話，它幾乎只在明確提到記憶相關字詞時才會使用，所以用這個 skill 讓它自主使用記憶。
 
 ## 其他建議指南
 
@@ -97,6 +116,16 @@
         test-2\             # Git branch: test/rc2  + SVN repo: /my-project/test/test2
         ...
 ```
+
+## 未來發展
+
+目前的這些 skill ，我自己的評價僅為*堪用*。
+
+後續會持續精進以下方向，如果有建議也歡迎提出或是發 Issue ，或是直接提出 PR 給我都可以。
+
+- 發布 skill ，目前只有 build 、 run 的 skill，未來考慮加入發布 skill 或其他需要使用 Visual Studio 的功能，目標是徹底告別肥厚的 Visual Studio 。
+- 精進 `plan.md` ，目前產出的 `plan.md` 品質沒有到很好，像是 AC 條件不會包含安全性、可讀性...等等的檢查，未來目標是讓 `plan.md` 可以更完善，以提升實作品質。
+- 精進 testing-and-proof ，目前這個測試 skill 不是很理想，經常遇到疫點小問題就停止並回報 block，速度上來說甚至可能比人工依照 `test-plan.md` 來測試還慢，目標是改善這個測試流程，讓測試也可以有良好的效果跟速度。
 
 ## 參考連結
 
