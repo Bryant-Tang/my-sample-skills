@@ -6,18 +6,18 @@
 ## 安裝步驟
 
 1. 如果你還沒有，安裝 [Microsoft VS Code <font style="opacity: 0.2;">~~微軟大戰程式碼~~</font>](https://code.visualstudio.com/)
-1. MCP 工具建議使用 Docker 運行，如果你還沒有，安裝 [Docker/Docker Desktop](https://www.docker.com/)，然後就可以直接使用 [mcp.json](./.vscode/mcp.json)
-    > 如果不使用 Docker ，請自行確保 [mcp.json](./.vscode/mcp.json) 中的 MCP 工具都可運行，可以參考 [各個 MCP 官方連結](#參考連結)
+1. MCP 工具建議使用 Docker 運行，如果你還沒有，安裝 [Docker/Docker Desktop](https://www.docker.com/)，然後就可以直接使用 [.vscode/mcp.json](./.vscode/mcp.json)
+    > 如果不使用 Docker ，請自行確保 [.vscode/mcp.json](./.vscode/mcp.json) 中的 MCP 工具都可運行，可以參考 [各個 MCP 官方連結](#參考連結)
 1. 參考 [建議設定](./docs/recommend-settings.md) 安裝套件、設定 VS Code
     如果 VS Code 設定打算只應用在工作區範圍，可以等下一步驟建立完成後，在 VS Code 左側功能列 > 齒輪圖標 <img src="./docs/images/setting-icon.png" height="35"> > 設定 > 工作區 <img src="./docs/images/settings-workspace.png" height="35">
     - 右上的開啟設定(JSON) <img src="./docs/images/settings-go-to-json.png" height="30"> 當中編輯 settings
     - 或是不開啟設定(JSON)，逐項在介面搜尋然後調整設定
 1. 參考 [Git 建立步驟](./docs/git-repo-create-steps.md) 建立多 worktree 專案結構
-1. [DBHub 設定](./.vscode.example/dbhub.toml)：把 `<DB_NAME>` 、 `<ACCOUNT>` 、 `<PASSWORD>` 、 `<DOMAIN>` 、 `<PORT>` 換掉
+1. DBHub 設定 ([.vscode/dbhub.toml](./.vscode.example/dbhub.toml))：把 `<DB_NAME>` 、 `<ACCOUNT>` 、 `<PASSWORD>` 、 `<DOMAIN>` 、 `<PORT>` 換掉
     - 注意 dsn 裡面的都要 url 編碼
     - 如果有多個資料庫可以直接複製整段貼上多個，像 `<DB_NAME_2>` 那樣
     - 如果只有單一資料庫，記得把 `<DB_NAME_2>` 那段刪掉
-1. [skill 腳本所需設定](./.agents/skill-scripts.psd1)
+1. skill 腳本所需設定 ([.agents/skill-scripts.psd1](./.agents/skill-scripts.psd1))
     |設定項目|用途|是否必填|範例|
     |-|-|-|-|
     |BUILD_PROJECT_PATH|要建置的 csproj 相對路徑(相對於根目錄，不用`./`)|**必填**|`'XXXWeb/XXXWeb.csproj'`|
@@ -97,7 +97,7 @@
     - local 可以用 DBHub 直接讀取
     - test 、 main 會寫一段 sql 請使用者幫 LLM 查詢
 - write:
-    - 一律寫到 [sql files](./sql%20files/) 裡面，請使用者執行
+    - 一律寫到 [sql files/](./sql%20files/) 裡面，請使用者執行
 
 #### memory
 
