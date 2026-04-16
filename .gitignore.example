@@ -1,19 +1,19 @@
 # SVN 資料忽略
-.svn/
+.svn/**/*
 # log 紀錄忽略
 logs/**/*
-!logs/.gitkeep
 # 本地上傳檔案忽略
 Uploads/**/*
-!Uploads/.gitkeep
 # 打包後的 js 忽略
 Content/css/**/*
 Content/js/**/*
 Content/fonts/**/*
 # 本地 vscode 設定檔忽略
-/.vscode/
+/.vscode/**/*
 # 本地 agents 忽略
 /.agents/**/*.local.*
+# 特殊佔位檔案保留
+!**/.gitkeep
 
 
 ## below is the default Visual Studio .gitignore, you can modify it as needed
