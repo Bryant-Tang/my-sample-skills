@@ -130,7 +130,7 @@
 
 - 發布 skill ，目前只有 build 、 run 的 skill，未來考慮加入發布 skill 或其他需要使用 Visual Studio 的功能，目標是徹底告別肥厚的 Visual Studio 。
 - 精進 `plan.md` ，目前產出的 `plan.md` 品質沒有到很好，像是 AC 條件不會包含安全性、可讀性...等等的檢查，未來目標是讓 `plan.md` 可以更完善，以提升實作品質。
-- 精進 testing-and-proof ，目前這個測試 skill 不是很理想，經常遇到疫點小問題就停止並回報 block，速度上來說甚至可能比人工依照 `test-plan.md` 來測試還慢，目標是改善這個測試流程，讓測試也可以有良好的效果跟速度。
+- 精進 testing-and-proof ，目前這個測試 skill 不是很理想，經常遇到一點小問題就停止並回報 block，速度上來說甚至可能比人工依照 `test-plan.md` 來測試還慢，目標是改善這個測試流程，讓測試也可以有良好的效果跟速度。
 
 ## 參考連結
 
