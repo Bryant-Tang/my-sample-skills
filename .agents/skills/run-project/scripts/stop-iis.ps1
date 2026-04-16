@@ -1,23 +1,21 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-function Get-SkillConfig {
-    param([string]$RepoRoot)
+. (Join-Path $PSScriptRoot 'resolve-iis-settings.ps1')
 
-    $configFile = Join-Path $RepoRoot '.agents/skill-scripts.psd1'
+function Normalize-PathString {
+    param([string]$PathValue)
 
-    if (-not (Test-Path -LiteralPath $configFile -PathType Leaf)) {
-        return @{}
+    if ([string]::IsNullOrWhiteSpace($PathValue)) {
+        return $null
     }
 
-    return Import-PowerShellDataFile -LiteralPath $configFile
+    return [System.IO.Path]::GetFullPath($PathValue)
 }
 
 try {
-    $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-    $repoRoot = [System.IO.Path]::GetFullPath((Join-Path $scriptDir '..\..\..\..'))
-    $config = Get-SkillConfig -RepoRoot $repoRoot
-    $iisExpressPath = $config['RUN_IIS_EXPRESS_PATH']
+    $settings = Resolve-IisSettings
+    $iisExpressPath = Normalize-PathString -PathValue $settings.IisExpressPath
 
     if ([string]::IsNullOrWhiteSpace($iisExpressPath)) {
         throw 'Missing RUN_IIS_EXPRESS_PATH in .agents/skill-scripts.psd1'
@@ -29,14 +27,33 @@ try {
         throw 'Missing RUN_IIS_EXPRESS_PATH in .agents/skill-scripts.psd1'
     }
 
-    $processes = Get-Process -Name $processName -ErrorAction SilentlyContinue
+    $processes = @(Get-CimInstance -ClassName Win32_Process -Filter "Name = '$($processName).exe'" -ErrorAction SilentlyContinue)
 
-    if ($null -eq $processes) {
-        Write-Output "No $processName process found."
+    if (-not [string]::IsNullOrWhiteSpace($settings.ApplicationhostConfigFile)) {
+        $processes = @($processes | Where-Object {
+            (Normalize-PathString -PathValue $_.ExecutablePath) -eq $iisExpressPath -and
+            $_.CommandLine -like "*/config:*" -and
+            $_.CommandLine -like "*$($settings.ApplicationhostConfigFile)*" -and
+            $_.CommandLine -like "*/site:*" -and
+            $_.CommandLine -like "*$($settings.IisConfigSiteName)*"
+        })
+    }
+    else {
+        $processes = @($processes | Where-Object {
+            (Normalize-PathString -PathValue $_.ExecutablePath) -eq $iisExpressPath -and
+            $_.CommandLine -like "*/path:*" -and
+            $_.CommandLine -like "*$($settings.SiteRoot)*" -and
+            $_.CommandLine -like "*/port:*" -and
+            $_.CommandLine -like "*$($settings.IisPort)*"
+        })
+    }
+
+    if ($null -eq $processes -or $processes.Count -eq 0) {
+        Write-Output "No repo-specific $processName process found."
         exit 0
     }
 
-    $processes | Stop-Process -Force
+    $processes | ForEach-Object { Stop-Process -Id $_.ProcessId -Force }
 }
 catch {
     [Console]::Error.WriteLine($_.Exception.Message)
