@@ -65,3 +65,4 @@
 1. 把 SVN 取出的部分 git commit 到 main 分支
 1. 合併 main 分支到 test/rc1 分支
 1. 把 `<YOUR_ROOT_DIR>\my-project\my-project.worktrees\test-1` 上到 SVN
+1. 強烈建議上 SVN 的那個 git commit (包含未來的)，都建立 tag ，這樣下次要上 SVN 時，可以直接右鍵那個 tag 然後 **Compare to/from HEAD** ，方便看需要加入哪些檔案、提交哪些檔案到 SVN 。

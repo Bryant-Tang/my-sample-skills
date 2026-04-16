@@ -33,6 +33,9 @@ Commit Graph 目前沒有發現好用的建立 worktree 方式，最方便的方
 1. 填寫 branch 名稱
 1. 選 Create Branch
 
+### 建立 tag
+1. 右鍵你要建立 tag 的 commit ，選擇 Create Tag
+
 ### Undo Commit
 切換到要 Undo 的 branch，然後右鍵 HEAD Commit，選擇 **Undo Commit** 即可。
 
