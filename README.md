@@ -32,9 +32,9 @@
 
 ## Skill 說明
 
-***<font size=4 color="red">不要在同一個 chat session 中接續使用 skill</font>***，尤其是開發流程的 `start-dev`, `write-plan`, `implement-task`, `testing-and-proof`。
-因為 LLM 傾向在 context window 快要不足之前，草草收尾，以避免撞到上限。
-盡管現在 AI 供應商都有提供壓縮聊天內容指令，但壓縮內容通常會造成 LLM 丟失資訊，並且你無從得知 LLM 丟失哪些資訊，一來一回補給它更多資訊還會又造成 context window 不足，最終得到品質低下的產出。
+***<font size=4 color="red">不要在同一個 chat session 中接續使用 skill</font>***，尤其是開發流程的 `start-dev`, `write-plan`, `implement-task`, `testing-and-proof`。  
+因為 LLM 傾向在 context window 快要不足之前，草草收尾，以避免撞到上限。  
+盡管現在 AI 供應商都有提供壓縮聊天內容指令，但壓縮內容通常會造成 LLM 丟失資訊，並且你無從得知 LLM 丟失哪些資訊，一來一回補給它更多資訊還會又造成 context window 不足，最終得到品質低下的產出。  
 (<font style="opacity: 0.2;">~~LLM 腦容量沒有那麼多可以一次到位處理計畫加實作加測試~~</font>)
 
 你需要閱讀開發流程中產生的 `sepcs/` 、 `sql files/` 內的文件，確認內容符合你所期望的，因為後續 LLM 會依照這些檔案工作，大原則是**可以缺但不能錯**，有缺可以補，但是有錯要改會很麻煩，效率上不如重新開始。
@@ -63,26 +63,29 @@
 
 如果任務很多但其實不互相依賴，可以並行實作，你可以叫他並行實作各個任務，但建議要加上叫他讓不同 subAgent 使用不同終端機，以避免同時多個 subAgent 互相衝突。
 
-如果一份 `plan.md` 中有很多項任務，不建議一次實作太多任務。 因為:
-如果是依序實作任務，盡管實作跟審查都是 subAgent 負責，連續處理太多任務仍然可能導致 context window 不足。
+如果一份 `plan.md` 中有很多項任務，不建議一次實作太多任務。 因為:  
+如果是依序實作任務，盡管實作跟審查都是 subAgent 負責，連續處理太多任務仍然可能導致 context window 不足。  
 如果是並行實作任務，就算 LLM 成功完成，太多任務所造成的大量程式碼變更，會導致你需要一次審查大量程式碼，我個人的經驗是，光是看到變更清單的大量檔案，就會減少我審查程式碼的動力。
 
 #### testing-and-proof
 
-如果是可以運行起來在瀏覽器驗證的功能或是 bug ，可以用這個 `/testing-and-proof` 指令叫他根據 `test-plan.md` 、 `test-n.md` 驗證。
-這部分會先 apply 一份本機測試用 stash，然後再 build 、 run 、 test。(可以在 [skill-scripts.psd1](./.agents/skill-scripts.psd1) 裡面設定，如果留空就不 apply)
+如果是可以運行起來在瀏覽器驗證的功能或是 bug ，可以用這個 `/testing-and-proof` 指令叫他根據 `test-plan.md` 、 `test-n.md` 驗證。  
+這部分會先 apply 一份本機測試用 stash，然後再 build 、 run 、 test。  
+(可以在 [skill-scripts.psd1](./.agents/skill-scripts.psd1) 裡面設定，如果留空就不 apply)
 
 #### commit-msg
 
-使用 `/commit-msg` 指令，直接告訴 LLM 你要 commit 哪個 wroktree 的變更、哪些變更...之類的，然後它會給你適合的 commit 訊息
+使用 `/commit-msg` 指令，直接告訴 LLM 你要 commit 哪個 wroktree 的變更、哪些變更...之類的，然後它會給你適合的 commit 訊息。
 
 #### build-project
 
-使用 `/build-project` 指令或讓 LLM 自己觸發，使用已寫好的 ps1 腳本建置 .NET Framework 專案，如果有設定前端打包，也會打包前端。(可以在 [skill-scripts.psd1](./.agents/skill-scripts.psd1) 裡面設定)
+使用 `/build-project` 指令或讓 LLM 自己觸發，使用已寫好的 ps1 腳本建置 .NET Framework 專案，如果有設定前端打包，也會打包前端。  
+(可以在 [skill-scripts.psd1](./.agents/skill-scripts.psd1) 裡面設定)
 
 #### run-project
 
-使用 `/run-project` 指令或讓 LLM 自己觸發，使用已寫好的 ps1 腳本運行 .NET Framework 專案在 IIS Express 上，需要先提供 applicationhost.config 檔案。(在 [skill-scripts.psd1](./.agents/skill-scripts.psd1) 裡面設定)
+使用 `/run-project` 指令或讓 LLM 自己觸發，使用已寫好的 ps1 腳本運行 .NET Framework 專案在 IIS Express 上，需要先提供 applicationhost.config 檔案。  
+(在 [skill-scripts.psd1](./.agents/skill-scripts.psd1) 裡面設定)
 
 #### db-management
 
