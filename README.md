@@ -55,6 +55,8 @@
 
 使用 `/write-plan` 指令，會根據指定的 `goal.md`，規劃實作計畫、任務、測試計畫在 `specs/`。
 
+目前 LLM 產生的 `plan.md` 品質沒有很好，你需要引導 LLM 細分太過龐大的任務或是加上更多 AC 條件，後續實作與審查時才會有良好的品質。
+
 #### implement-task
 
 使用 `/implement-task` 指令，會根據指定的 `plan.md`，依序呼叫 subAgent 實作，並呼叫 subAgent 依據 `plan.md` 中定義的 AC 審查。
