@@ -27,7 +27,7 @@
     |BUILD_FRONTEND_INSTALL_COMMAND|打包前端前 install 前端套件指令||`@('npm', 'install')`|
     |BUILD_FRONTEND_BUILD_COMMAND|打包前端指令||`@('npm', 'run', 'build')`|
     |RUN_IIS_EXPRESS_PATH|`iisexpress.exe` 絕對路徑|**必填**|`'C:/Program Files/IIS Express/iisexpress.exe'`|
-    |RUN_IIS_APPLICATIONHOST_CONFIG_PATH|`applicationhost.config`相對路徑(相對於根目錄，不用`./`)(可以直接用 Visual Studio 產生的那份)|**必填**|`'.vs/XXX/config/applicationhost.config'`|
+    |RUN_IIS_APPLICATIONHOST_CONFIG_PATH|`applicationhost.config`相對路徑(相對於根目錄，不用`./`)(可以直接用 Visual Studio 產生的那份，參考 [applicationhost.config 簡易配置指南](./docs/applicationhost-config-guild.md))|**必填**|`'.vs/XXXWeb/config/applicationhost.config'`|
     |TEST_LOCAL_STASH_SHA|本機測試用 stash 的 SHA，如果沒有則測試時不會套用 stash||`'fakeshaabcdefghijklmnopqrstuvwxyz0123456'`|
 
 ## Skill 說明
@@ -107,6 +107,7 @@
 ## 其他建議指南
 
 - [GitLens 簡易指南](./docs/gitlens-guild.md)
+- [applicationhost.config 簡易配置指南](./docs/applicationhost-config-guild.md)
 
 ## 專案結構
 
