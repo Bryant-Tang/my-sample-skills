@@ -1,4 +1,6 @@
-# 本地 git 結構建立步驟
+# 本地 git + 遠端 svn 結構指南
+
+## 初始建立步驟
 
 1. 建立專案資料夾 `<YOUR_ROOT_DIR>\my-project\` 、 `<YOUR_ROOT_DIR>\my-project\my-project\` 、 `<YOUR_ROOT_DIR>\my-project\my-project.worktrees\`
 1. 在 `<YOUR_ROOT_DIR>\my-project\my-project\` 打開 VS Code
@@ -65,4 +67,20 @@
 1. 把 SVN 取出的部分 git commit 到 main 分支
 1. 合併 main 分支到 test/rc1 分支
 1. 把 `<YOUR_ROOT_DIR>\my-project\my-project.worktrees\test-1` 上到 SVN
-1. 強烈建議上 SVN 的那個 git commit (包含未來的)，都建立 tag ，這樣下次要上 SVN 時，可以直接右鍵那個 tag 然後 **Compare to/from HEAD** ，方便看需要加入哪些檔案、提交哪些檔案到 SVN 。
+
+## 後續維護建議
+
+1. 建議以主 repo 為正式環境， dev-n worktree 為本地開發中工作目錄， test-n worktree 為測試環境
+    例如：
+    |Git|SVN|運行環境|
+    |-|-|-|
+    |主 repo (main)|https://your-svn-url/your-project/main/|正式環境|
+    |dev-1|無|無|
+    |dev-2|無|無|
+    |test-1|https://your-svn-url/your-project/test/test-1|客戶驗測環境1|
+    |test-2|https://your-svn-url/your-project/test/test-2|客戶驗測環境2|
+1. 建議在上 SVN 的那個 git commit 建立 tag ，這樣下次要上 SVN 時，可以直接在 GitLens 的 Commit Graph 右鍵那個 tag 然後 **Compare to/from HEAD** ，方便看需要加入哪些檔案、提交哪些檔案到 SVN 。
+    例如： `svn-main-HEAD` 、 `svn-test-1-HEAD` 、 `svn-test-2-HEAD`  
+    (備註：git tag 是不能有重複名稱也不能移動的，所以如果你下次要上 SVN 想移動 tag ，只能手動先刪除再建立)
+1. 建議在發布/釋出至運行環境的那個 git commit 建立 tag ，方便後續追蹤。
+    例如： `main-release-2026-04-17-001` 、 `test1-release-2026-04-17-001`

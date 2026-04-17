@@ -12,7 +12,7 @@
     如果 VS Code 設定打算只應用在工作區範圍，可以等下一步驟建立完成後，在 VS Code 左側功能列 > 齒輪圖標 <img src="./docs/images/setting-icon.png" height="35"> > 設定 > 工作區 <img src="./docs/images/settings-workspace.png" height="35">
     - 右上的開啟設定(JSON) <img src="./docs/images/settings-go-to-json.png" height="30"> 當中編輯 settings
     - 或是不開啟設定(JSON)，逐項在介面搜尋然後調整設定
-1. 參考 [Git 建立步驟](./docs/git-repo-create-steps.md) 建立多 worktree 專案結構
+1. 參考 [本地 git + 遠端 svn 結構指南](./docs/git-repo-create-steps.md) 建立多 worktree 專案結構
 1. DBHub 設定 ([.vscode/dbhub.toml](./.vscode.example/dbhub.toml))：把 `<DB_NAME>` 、 `<ACCOUNT>` 、 `<PASSWORD>` 、 `<DOMAIN>` 、 `<PORT>` 換掉
     - 注意 dsn 裡面的都要 url 編碼
     - 如果有多個資料庫可以直接複製整段貼上多個，像 `<DB_NAME_2>` 那樣
