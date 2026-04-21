@@ -1,13 +1,13 @@
 # Task N Category Review
 
-> 將檔名與本文中的 `task-n` 都替換成實際任務編號，例如 `task-1-correctness-review.md` 或 `task-3-build-review.md`。
+> 將檔名與本文中的 `task-n` 都替換成實際任務編號，例如 `task-1-correctness-security-integration-review.md` 或 `task-3-build-review.md`。
 
 > 本文件只記錄單一 review subAgent 負責的單一分類結果；父 agent 只讀取各份 review 報告，不負責彙整改寫。
 
 ## 範圍
 
 - 任務：<plan.md 中的任務名稱>
-- 分類：<correctness / security / maintainability / compatibility-integration / performance-resource-usage / testability-observability / ux-accessibility / build>
+- 分類：<correctness-security-integration / maintainability-testability-observability / performance-resource-ux / build>
 - 檢查依據：<相對路徑到 plan.md>、<相對路徑到 goal.md>、本批 AC
 - 檢查檔案：
   - <檔案 1>

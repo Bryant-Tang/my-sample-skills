@@ -28,7 +28,7 @@ user-invocable: true
 - One implementation task per review cycle.
 - If the current task changes C# code, the implementation subagent must follow the `csharp-comment` skill and add or update the required XML documentation comments plus any needed single-line or multi-line explanatory comments accordingly.
 - For non-build tasks, run parallel review subagents by AC category after each implementation attempt.
-- Review categories must follow the fixed AC category catalog from `write-plan`: Correctness, Security, Maintainability, Compatibility and Integration, Performance and Resource Usage, Testability and Observability, User Experience and Accessibility.
+- Review categories must follow the fixed AC category catalog from `write-plan`: Correctness, Security, and Integration; Maintainability, Testability, and Observability; Performance, Resource Usage, and User Experience.
 - Each review subagent must write or overwrite its own review report file. The parent agent must not consolidate or rewrite those review reports.
 - If any category review report is not `COMPLETE`, the current task is not `COMPLETE`.
 - If any category review report is not `COMPLETE`, run another implementation subagent for that same task, then rerun the parallel category reviews, and let each review subagent overwrite its own report file.
@@ -38,7 +38,7 @@ user-invocable: true
 - Do not run the final `test-plan.md` verification in this skill.
 
 ## Review Report Location Rule
-- For non-build tasks, each category review subagent must write a separate file named `task-n-<category>-review.md`, replacing `n` with the actual task number and `<category>` with a stable lowercase kebab-case category name such as `correctness`, `security`, or `maintainability`.
+- For non-build tasks, each category review subagent must write a separate file named `task-n-<category>-review.md`, replacing `n` with the actual task number and `<category>` with a stable lowercase kebab-case category name such as `correctness-security-integration`, `maintainability-testability-observability`, or `performance-resource-ux`.
 - For the final build task, the build review subagent must write `task-n-build-review.md`, replacing `n` with the actual task number.
 - If the spec folder already contains task review files at its root, keep that convention at the root.
 - Otherwise default to the `reviews/` folder inside the same spec folder.
