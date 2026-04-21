@@ -29,7 +29,7 @@ user-invocable: true
 - Categories:
 	- Correctness: business logic, data consistency, edge cases, null handling, dependency wiring, and static inspection for possible compile errors.
 	- Security: authentication, authorization, input validation, injection risk, data exposure, and permission boundaries.
-	- Maintainability: naming, structure, separation of concerns, detailed Traditional Chinese comments for non-obvious logic, and reuse of existing logic instead of duplicating similar code.
+	- Maintainability: naming, structure, separation of concerns, comment quality that follows `csharp-comment` for C# code including XML documentation comments and needed inline/block explanations, sufficiently clear Traditional Chinese comments where non-C# logic needs explanation, and reuse of existing logic instead of duplicating similar code.
 	- Compatibility and Integration: contract compatibility, existing API behavior, database/schema/config integration, and downstream impact.
 	- Performance and Resource Usage: obvious inefficient loops, queries, repeated I/O, memory pressure, and unnecessary remote calls.
 	- Testability and Observability: deterministic verification points, logs, error messages, diagnosability, and whether the change can be statically or locally checked.
@@ -38,7 +38,8 @@ user-invocable: true
 ## Mandatory Static Review Baseline
 - Every implementation task AC must explicitly include all of the following static checks inside the appropriate AC categories.
 - Correctness must statically check whether the changed code may introduce compile errors, missing references, broken signatures, or type mismatches.
-- Maintainability must statically check whether the changed logic has sufficiently detailed Traditional Chinese comments.
+- Maintainability must statically check whether changed C# code follows the `csharp-comment` skill, including member XML documentation coverage, method `<param>` definitions, and needed single-line or multi-line explanatory comments for non-obvious logic.
+- Maintainability must statically check whether changed non-C# logic has sufficiently detailed Traditional Chinese comments when comments are needed for understanding.
 - Maintainability must statically check whether the same logic already exists and should be reused instead of creating duplicated code.
 - These static checks are mandatory even when the task will later be validated through runtime verification.
 
@@ -48,6 +49,7 @@ user-invocable: true
 - Every implementation task must have explicit AC.
 - Every implementation task AC must be grouped by the full AC category catalog in this skill.
 - Every implementation task AC must include a code formatting and indentation requirement so the finished code matches the repository's existing style and has no obvious formatting drift.
+- Every implementation task that changes C# code must treat the `csharp-comment` skill as the required documentation comment standard.
 - The final implementation task in `plan.md` must always be a dedicated build task.
 - The final build task must require running the repository-standard build, capturing build failures, and fixing build errors until the build succeeds.
 - Every verification task must stay small enough that one verification task can finish in a single chat session.
@@ -68,7 +70,7 @@ user-invocable: true
 4. Split the implementation into ordered tasks. Keep each task narrow enough for a single chat session.
 5. For each non-build implementation task, write goal, scope, AC grouped by the full AC category catalog, and completion criteria.
 6. In every implementation task AC section, include an explicit acceptance criterion that code formatting and indentation must be checked and must match the repository's existing style.
-7. In every implementation task AC section, explicitly include the mandatory static review baseline so the task later checks possible compile errors, detailed Traditional Chinese comments, and duplicate-logic reuse.
+7. In every implementation task AC section, explicitly include the mandatory static review baseline so the task later checks possible compile errors, `csharp-comment` compliance for C# changes, necessary Traditional Chinese comments for non-C# logic, and duplicate-logic reuse.
 8. Append one final implementation task dedicated to build execution. This task must be the last task in `plan.md` and must define the repository-standard build scope, expected success condition, and how build failures are to be fixed.
 9. Create `test-plan.md` from the [test-plan template](./assets/test-plan.template.md).
 10. Split final verification into ordered `test-n.md` tasks, replacing `n` with the actual verification task number. Do not collapse everything into one large final verification document.
@@ -86,7 +88,7 @@ user-invocable: true
 ## Completion Checks
 - `plan.md` exists and all implementation tasks have AC.
 - Every implementation task AC is grouped by the full AC category catalog in this skill.
-- Every implementation task AC explicitly includes static checks for possible compile errors, detailed Traditional Chinese comments, and duplicate-logic reuse.
+- Every implementation task AC explicitly includes static checks for possible compile errors, `csharp-comment` compliance for C# changes, necessary Traditional Chinese comments for non-C# logic, and duplicate-logic reuse.
 - Every implementation task AC explicitly requires code formatting and indentation to be checked and aligned with existing repository style.
 - The final implementation task is a dedicated build task.
 - `test-plan.md` exists and lists the verification tasks in order.

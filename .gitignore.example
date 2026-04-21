@@ -12,6 +12,8 @@
 .vscode/**/*
 # 本地 agents 忽略
 .agents/**/*.local.*
+# Markitdown input temp files 忽略
+.markitdown/workdir/**/*
 # 特殊佔位檔案保留
 !**/.gitkeep
 

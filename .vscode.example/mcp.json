@@ -42,7 +42,7 @@
 				"--rm",
 				"--pull=always",
 				"-v",
-				"${workspaceFolder}:/workdir",
+				"${workspaceFolder}/.markitdown/workdir:/workdir",
 				"mcp/markitdown"
 			]
 		}

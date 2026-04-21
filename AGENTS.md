@@ -18,6 +18,8 @@ Use the `write-plan` skill when a requirement already has `goal.md` and now need
 
 Use the `implement-task` skill when a requirement already has `plan.md` and implementation should proceed task-by-task through subagents, with each task reviewed against its AC and recorded in `task-n-review.md` before moving on, with `n` replaced by the actual task number.
 
+Use the `csharp-comment` skill when a task adds or changes C# classes or members and those symbols or related implementation logic need comments, including XML documentation comments plus single-line or multi-line explanations, that a new engineer can understand without current requirement context.
+
 Use the `build-project` skill for reproducible ASP.NET MVC web builds of `Enterprise.TrainingSystemBackstage`, especially before startup verification or browser proof.
 
 Use the `run-project` skill when the task is to start or restart IIS Express on port `30067` after the web project is built. If fresh binaries may be needed first, run `build-project` before `run-project`.
@@ -25,6 +27,8 @@ Use the `run-project` skill when the task is to start or restart IIS Express on 
 Use the `testing-and-proof` skill when a requirement already has `test-plan.md` and the user wants ordered verification, screenshots, browser proof, or non-browser evidence recorded back into the corresponding `test-n.md` files, with `n` replaced by the actual verification task number.
 
 Use the `db-management` skill when the task requires inspecting project databases, checking schema or data, or producing SQL scripts under the repository's environment-split `sql files` folders.
+
+Use the `markitdown` skill when the task requires converting a local document into Markdown through the workspace MarkItDown MCP tool, especially when the source file must be staged under `.markitdown/workdir` and referenced with a `file:///workdir/...` URI.
 
 When running terminal commands for this repository, execute state-changing steps one command at a time. Do not send multi-line shell blocks and do not chain state-changing commands with `&&`. Run each stash, build, startup, shutdown, cleanup, or other side-effect command separately, inspect the result, and only then continue to the next step.
 
